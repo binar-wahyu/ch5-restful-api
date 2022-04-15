@@ -35,6 +35,35 @@ app.post("/api/articles", (req, res) => {
   res.status(201).json(article);
 });
 
+app.put("/api/articles/:id", (req, res) => {
+  // Destructuring
+  const { title, body } = req.body;
+
+  const indexArticle = articles.findIndex(
+    (e) => e.id === Number(req.params.id)
+  );
+
+  articles[indexArticle] = {
+    id: Number(req.params.id),
+    title: title,
+    body: body,
+  };
+
+  res.status(200).json(articles[indexArticle]);
+});
+
+app.delete("/api/articles/:id", (req, res) => {
+  const indexArticle = articles.findIndex(
+    (e) => e.id === Number(req.params.id)
+  );
+
+  articles.splice(indexArticle, 1);
+
+  res.status(200).json({
+    message: `Article with ID ${req.params.id} is deleted`,
+  });
+});
+
 app.listen(port, () => {
   console.log(`Listening on http://localhost:${port}`);
 });
